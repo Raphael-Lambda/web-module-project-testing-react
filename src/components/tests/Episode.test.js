@@ -13,19 +13,33 @@ const testEpisode = {
 }
 
 const testEpisodeWithoutImage = {
-    //Add in approprate test data structure here.
-}
+    id: 0,
+    image: null,
+    name: "the episode test",
+    season: 1,
+    number: 1,
+    summary: "this is just a test",
+    runtime: 1.5
+}//Add in appropriate test data structure here.
+
 
 test("renders without error", () => {
-
+    render(<Episode episode={testEpisodeWithoutImage}/>)
 });
 
-test("renders the summury test passed as prop", ()=>{
-    
+test("renders the summary test passed as prop", ()=>{
+    render(<Episode episode={testEpisodeWithoutImage}/>)
+    const summary = screen.queryByText(/this is just a test/i)
+    expect(summary).toBeInTheDocument();
+    expect(summary).toBeTruthy()
+    expect(summary).toBeDefined()
+
 });
 
 test("renders default image when image is not defined", ()=>{
-    
+    render(<Episode episode={testEpisodeWithoutImage}/>)
+    const image = screen.queryByAltText(/stranger_things.png/i)
+    expect(image).toBeInTheDocument();
 })
 
 //Tasks
