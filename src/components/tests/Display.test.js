@@ -1,6 +1,68 @@
+import React from 'react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import Display from './../Display';
+import mockFetchShow from "../../api/fetchShow";
 
+jest.mock("../../api/fetchShow");
 
+const testShow = {
+    name: "The Test Show",
+    summary: "this is a great show when testing something...",
+    seasons: [
+        {
+            id: 1,
+            name: 'season one',
+            episodes: [],
+        },
+        {
+            id: 2,
+            name: 'season two',
+            episodes: [],
+        },
+        {
+            id: 3,
+            name: 'season three',
+            episodes: [],
+        }
+    ]
+    //add in approprate test data structure here.
+}
 
+test("render Display", () => {
+    render(<Display />)
+})
+
+test("when the fetch button is pressed, the show component will display", async () => {
+    render(<Display />)
+    mockFetchShow.mockResolvedValueOnce(testShow);
+    const button = screen.queryByRole('button')
+    fireEvent.click(button)
+    await waitFor(() => {
+        const seasons = screen.queryAllByTestId("show-container");
+        expect(seasons).toHaveLength(1)
+    })
+})
+
+test("when the fetch button is pressed, the show component will display", async () => {
+    render(<Display />)
+    mockFetchShow.mockResolvedValueOnce(testShow);
+    const button = screen.queryByRole('button')
+    fireEvent.click(button)
+    await waitFor(() => {
+        const seasons = screen.queryAllByTestId("season-option");
+        expect(seasons).toHaveLength(3)
+    })
+})
+
+test("6", async () => {
+    const mockfFct = jest.fn()
+    render(<Display displayFunc={mockfFct}/>);
+    const button = screen.queryByRole('button');
+    fireEvent.click(button);
+    await waitFor(() => {
+        expect(fct).toHaveBeenCalledTimes(1);
+    })
+})
 
 
 

@@ -40,7 +40,6 @@ test('renders same number of options seasons are passed in', ()=>{
     render(<Show show={testShow} selectedSeason='none'/>)
     const seasons = screen.queryAllByTestId('season-option')
     expect(seasons).toHaveLength(3)
-
 });
 
 test('handleSelect is called when an season is selected', () => {
@@ -58,8 +57,6 @@ test('component renders when no seasons are selected and when rerenders with a s
     expect(episodes).toBeNull;
     rerender(<Show show={testShow} selectedSeason={1} />);
     expect(episodes).not.toBeNull;
-
-
 });
 
 //Tasks:
