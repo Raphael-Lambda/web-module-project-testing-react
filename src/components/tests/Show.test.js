@@ -1,26 +1,62 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, rerender } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import Show from './../Show';
 
 const testShow = {
+    name: "The Test Show",
+    summary: "this is a great show when testing something...",
+    seasons: [
+        {
+            id: 1,
+            name: 'season one',
+            episodes: [],
+        },
+        {
+            id: 2,
+            name: 'season two',
+            episodes: [],
+        },
+        {
+            id: 3,
+            name: 'season three',
+            episodes: [],
+        }
+    ]
     //add in approprate test data structure here.
 }
 
 test('renders testShow and no selected Season without errors', ()=>{
+    render(<Show show={testShow} selectedSeason='none' />)
 });
 
 test('renders Loading component when prop show is null', () => {
+    render(<Show show={null} selectedSeason='none' />)
+
 });
 
 test('renders same number of options seasons are passed in', ()=>{
+    render(<Show show={testShow} selectedSeason='none'/>)
+    const seasons = screen.queryAllByTestId('season-option')
+    expect(seasons).toHaveLength(3)
 });
 
 test('handleSelect is called when an season is selected', () => {
+    const mockSelect = jest.fn(() => console.log('testing click'))
+    render(<Show show={testShow} selectedSeason='none' handleSelect={mockSelect}/>)
+    expect(screen.queryByLabelText("Select A Season")).toBeInTheDocument()
+    const option = screen.queryByLabelText("Select A Season")
+    userEvent.selectOptions(option, ['1'])
+    expect(mockSelect).toHaveBeenCalledTimes(1)
 });
 
 test('component renders when no seasons are selected and when rerenders with a season passed in', () => {
+    const { rerender } = render(<Show show={testShow} selectedSeason={1}/>)
+    const episodes = screen.queryByTestId("episodes-container");
+    expect(episodes).toBeNull;
+    rerender(<Show show={testShow} selectedSeason={1} />);
+    expect(episodes).not.toBeNull;
 });
 
 //Tasks:
